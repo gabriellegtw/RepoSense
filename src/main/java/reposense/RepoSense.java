@@ -56,6 +56,9 @@ public class RepoSense {
                 return;
             }
 
+            System.out.println("Boolean: " + cliArguments.isPrettyPrintingUsed());
+            FileUtil.setPrettyPrintingMode(cliArguments.isPrettyPrintingUsed());
+
             configs = RunConfigurationDecider.getRunConfiguration(cliArguments).getRepoConfigurations();
             reportConfig = cliArguments.getReportConfiguration();
             repoBlurbMap = cliArguments.mergeWithReportConfigRepoBlurbMap();

@@ -79,6 +79,7 @@ public class ArgsParser {
     public static final String[] ORIGINALITY_THRESHOLD_FLAGS = new String[] {"--originality-threshold", "-ot"};
     public static final String[] PORTFOLIO_FLAG = new String[] {"--portfolio", "-P"};
     public static final String[] REFRESH_ONLY_TEXT_FLAG = new String[] {"--text", "-T"};
+    public static final String[] PRETTY_PRINT_FLAG = new String[] {"--use-json-pretty-printing", "-pr"};
 
     private static final Logger logger = LogsManager.getLogger(ArgsParser.class);
 
@@ -276,6 +277,11 @@ public class ArgsParser {
                 .action(Arguments.storeTrue())
                 .help("Enables fresh cloning.");
 
+        parser.addArgument(PRETTY_PRINT_FLAG)
+                .dest(PRETTY_PRINT_FLAG[0])
+                .action(Arguments.storeTrue())
+                .help("A flag to use json pretty printing when generating the json files.");
+
         return parser;
     }
 
@@ -301,6 +307,7 @@ public class ArgsParser {
         Path configFolderPath = results.get(CONFIG_FLAGS[0]);
         Path reportFolderPath = results.get(VIEW_FLAGS[0]);
         Path outputFolderPath = results.get(OUTPUT_FLAGS[0]);
+        boolean isJsonPrettyPrintingUsed = results.get(PRETTY_PRINT_FLAG[0]);
         ZoneId zoneId = results.get(TIMEZONE_FLAGS[0]);
         List<String> locations = results.get(REPO_FLAGS[0]);
         List<FileType> formats = FileType.convertFormatStringsToFileTypes(results.get(FORMAT_FLAGS[0]));
@@ -316,6 +323,10 @@ public class ArgsParser {
         int numAnalysisThreads = results.get(ANALYSIS_THREADS_FLAG[0]);
         boolean shouldPerformFreshCloning = results.get(FRESH_CLONING_FLAG[0]);
         boolean shouldRefreshOnlyText = results.get(REFRESH_ONLY_TEXT_FLAG[0]);
+
+        if (!isJsonPrettyPrintingUsed) {
+            System.out.println("Pretty printing is not parsed.");
+        }
 
         CliArguments.Builder cliArgumentsBuilder = new CliArguments.Builder()
                 .configFolderPath(configFolderPath)
@@ -335,7 +346,8 @@ public class ArgsParser {
                 .originalityThreshold(originalityThreshold)
                 .isPortfolio(isPortfolio)
                 .isFreshClonePerformed(shouldPerformFreshCloning)
-                .isOnlyTextRefreshed(shouldRefreshOnlyText);
+                .isOnlyTextRefreshed(shouldRefreshOnlyText)
+                .isPrettyPrintingUsed(isJsonPrettyPrintingUsed);
 
         LogsManager.setLogFolderLocation(outputFolderPath);
 

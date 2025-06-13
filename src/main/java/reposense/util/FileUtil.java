@@ -64,6 +64,7 @@ public class FileUtil {
             "Exception occurred while attempting to add or replace file in the zip file.";
     private static final String MESSAGE_FAIL_TO_DELETE_FILE_IN_ZIP_FILES =
             "Exception occurred while attempting to delete file in the zip file.";
+    private static boolean isPrettyPrintingUsed = false;
 
     /**
      * Zips all files of type {@code fileTypes} that are in the directory {@code pathsToZip} into a single file and
@@ -100,6 +101,10 @@ public class FileUtil {
         }
     }
 
+    public static void setPrettyPrintingMode(boolean isPrettyPrintingAdopted) {
+        isPrettyPrintingUsed = isPrettyPrintingAdopted;
+    }
+
     /**
      * Writes the JSON file representing the {@code object} at the given {@code path}.
      *
@@ -107,11 +112,19 @@ public class FileUtil {
      * was an error while writing the JSON file.
      */
     public static Optional<Path> writeJsonFile(Object object, String path) {
-        Gson gson = new GsonBuilder()
+        GsonBuilder gsonBuilder = new GsonBuilder()
                 .registerTypeHierarchyAdapter(LocalDateTime.class, new DateSerializer())
                 .registerTypeAdapter(FileType.class, new FileType.FileTypeSerializer())
-                .registerTypeHierarchyAdapter(ZoneId.class, new ZoneSerializer())
-                .create();
+                .registerTypeHierarchyAdapter(ZoneId.class, new ZoneSerializer());
+
+        Gson gson;
+        if (isPrettyPrintingUsed) {
+            System.out.println("Pretty Print!");
+            gson = gsonBuilder.setPrettyPrinting().create();
+        } else {
+            System.out.println("No Pretty Print in FileUtil");
+            gson = gsonBuilder.create();
+        }
 
         // Gson serializer from:
         // https://stackoverflow.com/questions/39192945/serialize-java-8-localdate-as-yyyy-mm-dd-with-gson

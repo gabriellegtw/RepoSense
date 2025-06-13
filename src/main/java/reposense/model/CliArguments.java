@@ -41,6 +41,7 @@ public class CliArguments {
     private boolean isPortfolio;
     private boolean isFreshClonePerformed = ArgsParser.DEFAULT_SHOULD_FRESH_CLONE;
     private boolean isOnlyTextRefreshed;
+    private boolean isPrettyPrintingUsed;
 
     private List<String> locations;
     private boolean isViewModeOnly;
@@ -208,6 +209,13 @@ public class CliArguments {
 
     public boolean isOnlyTextRefreshed() {
         return isOnlyTextRefreshed;
+    }
+
+    public boolean isPrettyPrintingUsed() {
+        if (!isPrettyPrintingUsed) {
+            System.out.println("Cli Arguments: Pretty printing is not activated.");
+        }
+        return isPrettyPrintingUsed;
     }
 
     @Override
@@ -549,6 +557,20 @@ public class CliArguments {
          */
         public Builder isOnlyTextRefreshed(boolean isOnlyTextRefreshed) {
             this.cliArguments.isOnlyTextRefreshed = isOnlyTextRefreshed;
+            return this;
+        }
+
+        /**
+         * This helps to set that the pretty printing is activated in the CLI.
+         *
+         * @param isPrettyPrintingUsed Is pretty printing used.
+         * @return Builder
+         */
+        public Builder isPrettyPrintingUsed(boolean isPrettyPrintingUsed) {
+            if (!isPrettyPrintingUsed) {
+                System.out.println("Cli Arguments in Builder class: Pretty printing is not activated.");
+            }
+            this.cliArguments.isPrettyPrintingUsed = isPrettyPrintingUsed;
             return this;
         }
 
