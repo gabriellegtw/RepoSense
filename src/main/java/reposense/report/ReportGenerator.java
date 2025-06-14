@@ -449,7 +449,9 @@ public class ReportGenerator {
         CommitContributionSummary commitSummary = commitsReporter.generateCommitSummary(config);
         earliestSinceDate = commitSummary.getEarliestSinceDate();
 
-        List<Path> generatedFiles = generateIndividualRepoReport(repoReportDirectory, commitSummary, authorshipSummary);
+        List<Path> generatedFiles = generateIndividualRepoReport(
+                formatter.format(ZonedDateTime.now(cliArguments.getZoneId())), repoReportDirectory,
+                commitSummary, authorshipSummary);
         logger.info(String.format(MESSAGE_COMPLETE_ANALYSIS, config.getLocation(), config.getBranch()));
         return generatedFiles;
     }
@@ -578,9 +580,10 @@ public class ReportGenerator {
      *
      * @return A list of paths to the JSON report files generated for this report.
      */
-    private List<Path> generateIndividualRepoReport(String repoReportDirectory,
+    private List<Path> generateIndividualRepoReport(String reportGeneratedTime, String repoReportDirectory,
             CommitContributionSummary commitSummary, AuthorshipSummary authorshipSummary) {
-        CommitReportJson commitReportJson = new CommitReportJson(commitSummary, authorshipSummary);
+        CommitReportJson commitReportJson = new CommitReportJson(reportGeneratedTime,
+                commitSummary, authorshipSummary);
 
         List<Path> generatedFiles = new ArrayList<>();
         FileUtil.writeJsonFile(commitReportJson, getIndividualCommitsPath(repoReportDirectory))

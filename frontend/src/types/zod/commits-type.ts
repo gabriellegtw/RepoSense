@@ -24,6 +24,7 @@ const authorFileTypeContributionsSchema = z.record(z.number());
 // Contains the zod validation schema for the commits.json file
 
 export const commitsSchema = z.object({
+  reportGeneratedTime: z.string(),
   authorDailyContributionsMap: z.record(z.array(authorDailyContributionsSchema)),
   authorFileTypeContributionMap: z.record(authorFileTypeContributionsSchema),
   authorContributionVariance: z.record(z.number()),
