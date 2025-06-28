@@ -322,6 +322,7 @@ public class ArgsParser {
         boolean isPortfolio = results.get(PORTFOLIO_FLAG[0]);
         int numCloningThreads = results.get(CLONING_THREADS_FLAG[0]);
         int numAnalysisThreads = results.get(ANALYSIS_THREADS_FLAG[0]);
+        int numMinLoc = results.get(FILTER_COMMIT_FLAG[0]);
         boolean shouldPerformFreshCloning = results.get(FRESH_CLONING_FLAG[0]);
         boolean shouldRefreshOnlyText = results.get(REFRESH_ONLY_TEXT_FLAG[0]);
 
@@ -339,6 +340,7 @@ public class ArgsParser {
                 .isFindingPreviousAuthorsPerformed(shouldFindPreviousAuthors)
                 .numCloningThreads(numCloningThreads)
                 .numAnalysisThreads(numAnalysisThreads)
+                .numMinLoc(numMinLoc)
                 .isAuthorshipAnalyzed(isAuthorshipAnalyzed)
                 .originalityThreshold(originalityThreshold)
                 .isPortfolio(isPortfolio)

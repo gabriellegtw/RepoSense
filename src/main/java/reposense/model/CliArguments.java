@@ -34,6 +34,7 @@ public class CliArguments {
     private boolean isFileSizeLimitIgnored;
     private int numCloningThreads;
     private int numAnalysisThreads;
+    private int numMinLoc;
     private ZoneId zoneId;
     private boolean isFindingPreviousAuthorsPerformed;
     private boolean isAuthorshipAnalyzed;
@@ -116,6 +117,10 @@ public class CliArguments {
 
     public int getNumAnalysisThreads() {
         return numAnalysisThreads;
+    }
+
+    public int getNumMinLoc() {
+        return numMinLoc;
     }
 
     public boolean isFindingPreviousAuthorsPerformed() {
@@ -393,6 +398,16 @@ public class CliArguments {
          */
         public Builder numAnalysisThreads(int numAnalysisThreads) {
             this.cliArguments.numAnalysisThreads = numAnalysisThreads;
+            return this;
+        }
+
+        /**
+         * Adds the {@code numMinLoc} to CliArguments.
+         *
+         * @param numMinLoc The number of lines of code to ignore.
+         */
+        public Builder numMinLoc(int numMinLoc) {
+            this.cliArguments.numMinLoc = numMinLoc;
             return this;
         }
 
