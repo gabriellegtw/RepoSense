@@ -79,6 +79,7 @@ public class ArgsParser {
     public static final String[] ORIGINALITY_THRESHOLD_FLAGS = new String[] {"--originality-threshold", "-ot"};
     public static final String[] PORTFOLIO_FLAG = new String[] {"--portfolio", "-P"};
     public static final String[] REFRESH_ONLY_TEXT_FLAG = new String[] {"--text", "-T"};
+    public static final String[] FILTER_COMMIT_FLAG = new String[]{"--filter-min-loc", "-fl"};
 
     private static final Logger logger = LogsManager.getLogger(ArgsParser.class);
 
@@ -269,6 +270,13 @@ public class ArgsParser {
                 .type(new AnalysisThreadsArgumentType())
                 .setDefault(DEFAULT_NUM_ANALYSIS_THREADS)
                 .help(FeatureControl.SUPPRESS);
+
+        parser.addArgument(FILTER_COMMIT_FLAG)
+                .dest(FILTER_COMMIT_FLAG[0])
+                .metavar("INT")
+                .type(Integer.class)
+                .setDefault(0)
+                .help("A flag to filter out commits that are less than or equal to the argument.");
 
         // Testing flags
         parser.addArgument(FRESH_CLONING_FLAG)
