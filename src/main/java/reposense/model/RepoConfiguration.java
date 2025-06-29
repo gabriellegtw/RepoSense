@@ -685,11 +685,6 @@ public class RepoConfiguration {
         }
     }
 
-    public static void setMinLoc(List<RepoConfiguration> configs,
-                                                            int minLoc) {
-        configs.forEach(config -> config.setMinLoc(minLoc));
-    }
-
     /**
      * Checks if any of the {@code configs} is finding previous authors for commit analysis.
      */
@@ -1096,6 +1091,10 @@ public class RepoConfiguration {
 
     public AuthorConfiguration getAuthorConfig() {
         return authorConfig;
+    }
+
+    public static void setMinLoc(List<RepoConfiguration> configs, int minLoc) {
+        configs.forEach(config -> config.setMinLoc(minLoc));
     }
 
     public void setMinLoc(int minLoc) {

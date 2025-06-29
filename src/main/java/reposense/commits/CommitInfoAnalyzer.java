@@ -128,8 +128,8 @@ public class CommitInfoAnalyzer {
         Map<FileType, ContributionPair> fileTypeAndContributionMap =
                 getFileTypesAndContribution(fileTypeContributions, config);
 
-        CommitResult commit = new CommitResult(author, hash, isMergeCommit, adjustedDate, messageTitle, messageBody, tags,
-                fileTypeAndContributionMap);
+        CommitResult commit = new CommitResult(author, hash, isMergeCommit, adjustedDate, messageTitle,
+                messageBody, tags, fileTypeAndContributionMap);
 
         if (commit.getInsertions() + commit.getDeletions() <= config.getMinLoc()) {
             return null;
