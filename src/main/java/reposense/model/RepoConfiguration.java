@@ -55,6 +55,7 @@ public class RepoConfiguration {
     private transient long fileSizeLimit = DEFAULT_FILE_SIZE_LIMIT;
     private transient boolean isFileSizeLimitOverriding = false;
     private transient boolean isIgnoredFileAnalysisSkipped = false;
+    private transient int minLoc = -1;
 
     private transient boolean hasUpdatedSinceDateInConfig = false;
 
@@ -684,6 +685,11 @@ public class RepoConfiguration {
         }
     }
 
+    public static void setMinLoc(List<RepoConfiguration> configs,
+                                                            int minLoc) {
+        configs.forEach(config -> config.setMinLoc(minLoc));
+    }
+
     /**
      * Checks if any of the {@code configs} is finding previous authors for commit analysis.
      */
@@ -1090,5 +1096,13 @@ public class RepoConfiguration {
 
     public AuthorConfiguration getAuthorConfig() {
         return authorConfig;
+    }
+
+    public void setMinLoc(int minLoc) {
+        this.minLoc = minLoc;
+    }
+
+    public int getMinLoc() {
+        return minLoc;
     }
 }
