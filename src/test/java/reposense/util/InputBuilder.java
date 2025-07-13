@@ -204,6 +204,11 @@ public class InputBuilder {
         return this;
     }
 
+    public InputBuilder addMinLoc(int loc) {
+        input.append(ArgsParser.FILTER_COMMIT_FLAG[0] + WHITESPACE + loc + WHITESPACE);
+        return this;
+    }
+
     /**
      * Adds the flag to enable shallow cloning.
      * This method should only be called once in one build.

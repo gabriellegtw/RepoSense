@@ -816,6 +816,16 @@ public class ArgsParserTest {
         Assertions.assertFalse(cliArguments.isOnlyTextRefreshed());
     }
 
+    @Test
+    public void parse_filterMinCommits_success() throws Exception {
+        String input = DEFAULT_INPUT_BUILDER
+                .addMinLoc(3)
+                .build();
+        CliArguments cliArguments = ArgsParser.parse(translateCommandline(input));
+
+        Assertions.assertEquals(3, cliArguments.getNumMinLoc());
+    }
+
     /**
      * Ensures that {@code actualSinceDate} is exactly one month before {@code untilDate}.
      *

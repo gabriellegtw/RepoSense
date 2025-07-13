@@ -81,7 +81,8 @@ public class CommitInfoAnalyzerTest extends GitTestTemplate {
         List<CommitInfo> commitInfos = commitInfoExtractor.extractCommitInfos(config);
         List<CommitResult> commitResults = commitInfoAnalyzer.analyzeCommits(commitInfos, config);
 
-        Assertions.assertEquals(commitInfos.size() - NUMBER_EUGENE_COMMIT - NUMBER_COMMIT_THREE_OR_LESS, commitResults.size());
+        Assertions.assertEquals(commitInfos.size() - NUMBER_EUGENE_COMMIT - NUMBER_COMMIT_THREE_OR_LESS,
+                commitResults.size());
     }
 
     @Test
