@@ -62,6 +62,7 @@ public class RepoSense {
             authorBlurbMap = cliArguments.getAuthorBlurbMap();
             chartBlurbMap = cliArguments.getChartBlurbMap();
 
+            RepoConfiguration.setMinLoc(configs, cliArguments.getNumMinLoc());
             RepoConfiguration.setFormatsToRepoConfigs(configs, cliArguments.getFormats());
             RepoConfiguration.setDatesToRepoConfigs(configs, cliArguments.getSinceDate(), cliArguments.getUntilDate());
             RepoConfiguration.setZoneIdToRepoConfigs(configs, cliArguments.getZoneId());

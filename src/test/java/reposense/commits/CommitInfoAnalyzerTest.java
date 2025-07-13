@@ -31,6 +31,7 @@ public class CommitInfoAnalyzerTest extends GitTestTemplate {
     private static final int NUMBER_EUGENE_COMMIT = 1;
     private static final int NUMBER_MINGYI_COMMIT = 1;
     private static final int NUMBER_EMPTY_MESSAGE_COMMIT = 1;
+    private static final int NUMBER_COMMIT_THREE_OR_LESS = 6;
     private static final FileType FILETYPE_JAVA = new FileType("java", Collections.singletonList("**java"));
     private static final FileType FILETYPE_MD = new FileType("md", Collections.singletonList("**md"));
     private static final FileType FILETYPE_TXT = new FileType("txt", Collections.singletonList("**txt"));
@@ -62,6 +63,32 @@ public class CommitInfoAnalyzerTest extends GitTestTemplate {
 
     @Test
     public void analyzeCommits_fakeMainAuthorNoIgnoredCommitsNoDateRange_success() {
+        config.addAuthorNamesToAuthorMapEntry(new Author(MAIN_AUTHOR_NAME), MAIN_AUTHOR_NAME);
+        config.addAuthorNamesToAuthorMapEntry(new Author(FAKE_AUTHOR_NAME), FAKE_AUTHOR_NAME);
+
+        List<CommitInfo> commitInfos = commitInfoExtractor.extractCommitInfos(config);
+        List<CommitResult> commitResults = commitInfoAnalyzer.analyzeCommits(commitInfos, config);
+
+        Assertions.assertEquals(commitInfos.size() - NUMBER_EUGENE_COMMIT, commitResults.size());
+    }
+
+    @Test
+    public void analyzeCommits_retrieveAllWithoutMinCommits_success() {
+        config.setMinLoc(3);
+        config.addAuthorNamesToAuthorMapEntry(new Author(MAIN_AUTHOR_NAME), MAIN_AUTHOR_NAME);
+        config.addAuthorNamesToAuthorMapEntry(new Author(FAKE_AUTHOR_NAME), FAKE_AUTHOR_NAME);
+
+        List<CommitInfo> commitInfos = commitInfoExtractor.extractCommitInfos(config);
+        List<CommitResult> commitResults = commitInfoAnalyzer.analyzeCommits(commitInfos, config);
+
+        Assertions.assertEquals(commitInfos.size() - NUMBER_EUGENE_COMMIT - NUMBER_COMMIT_THREE_OR_LESS,
+                commitResults.size());
+    }
+
+    @Test
+    public void analyzeCommits_retrieveAllWithoutMinCommitsLessThanZero_success() {
+        // In future iterations, an error message should be thrown for invalid numbers
+        config.setMinLoc(-1);
         config.addAuthorNamesToAuthorMapEntry(new Author(MAIN_AUTHOR_NAME), MAIN_AUTHOR_NAME);
         config.addAuthorNamesToAuthorMapEntry(new Author(FAKE_AUTHOR_NAME), FAKE_AUTHOR_NAME);
 

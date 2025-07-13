@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -69,6 +70,7 @@ public class CommitInfoAnalyzer {
 
         return commitInfos.stream()
                 .map(commitInfo -> analyzeCommit(commitInfo, config))
+                .filter(Objects::nonNull)
                 .filter(commitResult -> !commitResult.getAuthor().equals(Author.UNKNOWN_AUTHOR)
                         && !CommitHash.isInsideCommitList(commitResult.getHash(), config.getIgnoreCommitList()))
                 .distinct()
@@ -113,8 +115,12 @@ public class CommitInfoAnalyzer {
             extractTagNames(tags);
         }
 
-        if (statLine.isEmpty()) { // empty commit, no files changed
+        if (statLine.isEmpty() && config.getMinLoc() < 0) { // empty commit, no files changed
             return new CommitResult(author, hash, isMergeCommit, adjustedDate, messageTitle, messageBody, tags);
+        }
+
+        if (statLine.isEmpty() && config.getMinLoc() >= 0) { // empty commit, no files changed
+            return null;
         }
 
         String[] statInfos = statLine.split(NEW_LINE_SPLITTER);
@@ -122,8 +128,14 @@ public class CommitInfoAnalyzer {
         Map<FileType, ContributionPair> fileTypeAndContributionMap =
                 getFileTypesAndContribution(fileTypeContributions, config);
 
-        return new CommitResult(author, hash, isMergeCommit, adjustedDate, messageTitle, messageBody, tags,
-                fileTypeAndContributionMap);
+        CommitResult commit = new CommitResult(author, hash, isMergeCommit, adjustedDate, messageTitle,
+                messageBody, tags, fileTypeAndContributionMap);
+
+        if (commit.getInsertions() + commit.getDeletions() <= config.getMinLoc()) {
+            return null;
+        }
+
+        return commit;
     }
 
     /**

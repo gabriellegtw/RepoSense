@@ -79,6 +79,7 @@ public class ArgsParser {
     public static final String[] ORIGINALITY_THRESHOLD_FLAGS = new String[] {"--originality-threshold", "-ot"};
     public static final String[] PORTFOLIO_FLAG = new String[] {"--portfolio", "-P"};
     public static final String[] REFRESH_ONLY_TEXT_FLAG = new String[] {"--text", "-T"};
+    public static final String[] FILTER_COMMIT_FLAG = new String[]{"--filter-min-loc", "-fl"};
 
     private static final Logger logger = LogsManager.getLogger(ArgsParser.class);
 
@@ -270,6 +271,13 @@ public class ArgsParser {
                 .setDefault(DEFAULT_NUM_ANALYSIS_THREADS)
                 .help(FeatureControl.SUPPRESS);
 
+        parser.addArgument(FILTER_COMMIT_FLAG)
+                .dest(FILTER_COMMIT_FLAG[0])
+                .metavar("INT")
+                .type(Integer.class)
+                .setDefault(0)
+                .help("A flag to filter out commits that are less than or equal to the argument.");
+
         // Testing flags
         parser.addArgument(FRESH_CLONING_FLAG)
                 .dest(FRESH_CLONING_FLAG[0])
@@ -314,6 +322,7 @@ public class ArgsParser {
         boolean isPortfolio = results.get(PORTFOLIO_FLAG[0]);
         int numCloningThreads = results.get(CLONING_THREADS_FLAG[0]);
         int numAnalysisThreads = results.get(ANALYSIS_THREADS_FLAG[0]);
+        int numMinLoc = results.get(FILTER_COMMIT_FLAG[0]);
         boolean shouldPerformFreshCloning = results.get(FRESH_CLONING_FLAG[0]);
         boolean shouldRefreshOnlyText = results.get(REFRESH_ONLY_TEXT_FLAG[0]);
 
@@ -331,6 +340,7 @@ public class ArgsParser {
                 .isFindingPreviousAuthorsPerformed(shouldFindPreviousAuthors)
                 .numCloningThreads(numCloningThreads)
                 .numAnalysisThreads(numAnalysisThreads)
+                .numMinLoc(numMinLoc)
                 .isAuthorshipAnalyzed(isAuthorshipAnalyzed)
                 .originalityThreshold(originalityThreshold)
                 .isPortfolio(isPortfolio)
