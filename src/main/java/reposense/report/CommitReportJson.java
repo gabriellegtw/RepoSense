@@ -16,6 +16,7 @@ import reposense.model.FileType;
  * Class that holds the data to be serialized into JSON format in `commits.json`.
  */
 public class CommitReportJson {
+    private final String reportGeneratedTime;
     private final Map<Author, List<AuthorDailyContribution>> authorDailyContributionsMap;
     private final Map<Author, LinkedHashMap<FileType, Integer>> authorFileTypeContributionMap;
     private final Map<Author, Float> authorContributionVariance;
@@ -26,6 +27,8 @@ public class CommitReportJson {
      */
     public CommitReportJson(String displayName) {
         Author emptyAuthor = Author.UNKNOWN_AUTHOR;
+
+        reportGeneratedTime = null;
 
         authorDailyContributionsMap = new HashMap<>();
         authorDailyContributionsMap.put(emptyAuthor, Collections.emptyList());
@@ -40,7 +43,9 @@ public class CommitReportJson {
         authorDisplayNameMap.put(emptyAuthor, displayName);
     }
 
-    public CommitReportJson(CommitContributionSummary commitSummary, AuthorshipSummary authorshipSummary) {
+    public CommitReportJson(String reportGeneratedTime,
+                            CommitContributionSummary commitSummary, AuthorshipSummary authorshipSummary) {
+        this.reportGeneratedTime = reportGeneratedTime;
         authorDailyContributionsMap = commitSummary.getAuthorDailyContributionsMap();
         authorFileTypeContributionMap = authorshipSummary.getAuthorFileTypeContributionMap();
         authorContributionVariance = commitSummary.getAuthorContributionVariance();
